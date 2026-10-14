@@ -27,6 +27,5 @@ To run this app you need Docker installed
 
     docker compose exec app dotnet test
 
-**AI TOOLS USAGE DECLARATION**
-
+**AI TOOLS USAGE DECLARATION** - 
     Claude/Gemini - used to help at the presentations (correct spelling and some ideas), sometimes used in coding (giving ideas, debugging) 
