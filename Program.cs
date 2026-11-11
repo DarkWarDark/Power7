@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Power7.Models;
+using Power7.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,13 @@ builder.Services.AddDbContext<Power7Context>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Power7Db")));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<Power7Context>();
+    DbInitializer.Initialize(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
