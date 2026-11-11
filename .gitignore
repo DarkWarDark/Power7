@@ -1,5 +1,5 @@
-/.vs/Power7.slnx/DesignTimeBuild
-/.vs
-/obj
-/.vs
-/.vs
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
