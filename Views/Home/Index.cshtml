@@ -2,70 +2,113 @@
     ViewData["Title"] = "Home";
 }
 
+<!-- Hero Banner -->
 <div class="p-4 p-md-5 mb-4 rounded-3 bg-dark text-white shadow-sm">
     <div class="col-lg-8 px-0">
         <span class="badge bg-warning text-dark fw-bold mb-2">ENERGY &amp; PERFORMANCE STORE</span>
         <h1 class="display-5 fw-bold">Fuel Your Focus &amp; Training with Power7</h1>
         <p class="lead my-3 text-light opacity-75">
-            Discover our huge supply of energy drinks, pre-workout containers, special coffee and cold natural refreshments.
+            Explore our curated selection of energy drinks, pre-workout formulas, specialty coffee, and cold-pressed natural refreshments.
         </p>
         <div class="d-flex flex-wrap gap-2 mt-4">
             <a asp-controller="Catalog" asp-action="Index" class="btn btn-warning btn-lg fw-semibold text-dark">
-                Explore the catalogue
+                Explore Catalogue
             </a>
             @if (User.Identity?.IsAuthenticated != true)
             {
                 <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light btn-lg">
-                    Authenticate account
+                    Sign In
                 </a>
             }
         </div>
     </div>
 </div>
 
-<div class="row g-3">
+<!-- 4 Product Categories -->
+<div class="row g-3 mb-4">
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h5 class="card-title fw-bold">⚡ Energy Drinks</h5>
-                <p class="card-text small text-muted">Quick energy, plenty for your working sessions or gaming.</p>
-                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="1" class="btn btn-sm btn-outline-dark">
-                    View products
+                <p class="card-text small text-muted flex-grow-1">Fast-acting energy and clean focus for intense work, study, or gaming sessions.</p>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="1" class="btn btn-sm btn-outline-dark align-self-start">
+                    Browse Category
                 </a>
             </div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h5 class="card-title fw-bold">🏋️ Pre-Workout</h5>
-                <p class="card-text small text-muted">Concentrated formulas for more power, endurance and a nice pump.</p>
-                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="2" class="btn btn-sm btn-outline-dark">
-                    View products
+                <p class="card-text small text-muted flex-grow-1">Concentrated formulas engineered for strength, endurance, and muscle pump.</p>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="2" class="btn btn-sm btn-outline-dark align-self-start">
+                    Browse Category
                 </a>
             </div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h5 class="card-title fw-bold">☕ Coffee</h5>
-                <p class="card-text small text-muted">Coffee beans or powder, premium products for a super start every day.</p>
-                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="3" class="btn btn-sm btn-outline-dark">
-                    View products
+                <p class="card-text small text-muted flex-grow-1">Premium whole bean, ground, and instant coffee for a sharp morning start.</p>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="3" class="btn btn-sm btn-outline-dark align-self-start">
+                    Browse Category
                 </a>
             </div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h5 class="card-title fw-bold">🍊 Natural Refreshments</h5>
-                <p class="card-text small text-muted">Full of vitamins and 100% natural which all kinds of flavours.</p>
-                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="4" class="btn btn-sm btn-outline-dark">
-                    View products
+                <p class="card-text small text-muted flex-grow-1">Daily hydration and essential vitamins from 100% natural fruit juices.</p>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="4" class="btn btn-sm btn-outline-dark align-self-start">
+                    Browse Category
                 </a>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Random Fact of the Day (sub cele 4 categorii) -->
+<div class="card border-0 border-start border-warning border-4 shadow-sm bg-white">
+    <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-dark text-warning">💡 FACT OF THE DAY</span>
+                <span id="factCategoryBadge" class="badge bg-light text-dark border">@ViewBag.DailyFactCategory</span>
+            </div>
+            <p id="factText" class="mb-0 fs-6 text-dark fw-medium">
+                @ViewBag.DailyFactText
+            </p>
+        </div>
+
+        <button type="button" id="nextFactBtn" class="btn btn-outline-dark btn-sm text-nowrap align-self-start align-self-md-center">
+            ↻ Random Fact
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const power7Facts = @Html.Raw(ViewBag.AllFactsJson ?? "[]");
+        const factTextEl = document.getElementById("factText");
+        const factCategoryEl = document.getElementById("factCategoryBadge");
+        const nextFactBtn = document.getElementById("nextFactBtn");
+
+        if (nextFactBtn && power7Facts.length > 1) {
+            nextFactBtn.addEventListener("click", () => {
+                const currentText = factTextEl.textContent.trim();
+                let next;
+                do {
+                    next = power7Facts[Math.floor(Math.random() * power7Facts.length)];
+                } while (next.Fact === currentText);
+
+                factCategoryEl.textContent = next.Category;
+                factTextEl.textContent = next.Fact;
+            });
+        }
+    </script>
+}
