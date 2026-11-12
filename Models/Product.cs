@@ -7,7 +7,7 @@ namespace Power7.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Numele produsului este obligatoriu")]
+        [Required(ErrorMessage = "Name of the product is mandatory")]
         [StringLength(200)]
         public string Name { get; set; }
 
@@ -15,11 +15,11 @@ namespace Power7.Models
         public string Description { get; set; }
 
         [Required]
-        [Range(0.01, 10000.00, ErrorMessage = "Pretul trebuie sa fie mai mare ca 0")]
+        [Range(0.01, 10000.00, ErrorMessage = "The price must be more than 0")]
         public decimal Price { get; set; }
 
         [Required]
-        [Range(0, 10000, ErrorMessage = "Stocul nu poate fi negativ")]
+        [Range(0, 10000, ErrorMessage = "The stock cannot be negative")]
         public int Stock { get; set; }
 
         public string Image_url { get; set; }

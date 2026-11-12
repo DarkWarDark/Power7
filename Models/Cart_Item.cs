@@ -15,7 +15,7 @@ namespace Power7.Models
         public Product Product { get; set; }
 
         [Required]
-        [Range(1, 100, ErrorMessage = "Cantitatea trebuie sa fie cel putin 1")]
+        [Range(1, 100, ErrorMessage = "The quantity must be at least 1")]
         public int Quantity { get; set; }
     }
 }

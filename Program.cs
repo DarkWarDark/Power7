@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Power7.Models;
-using Power7.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +9,14 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Power7Context>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Power7Db")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+        options.Cookie.HttpOnly = true;
+    });
 
 var app = builder.Build();
 

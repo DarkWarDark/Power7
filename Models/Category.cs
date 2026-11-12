@@ -8,7 +8,7 @@ namespace Power7.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Numele categoriei este obligatoriu")]
+        [Required(ErrorMessage = "The name of the product is mandatory")]
         [StringLength(100)]
         public string Name { get; set; }
 
